@@ -1,0 +1,14 @@
+	ORG	$0000
+S	RMB	2
+P	RMB	1
+Q	RMB	1
+R	RMB	1
+	
+	org	$c000
+	CLR	S
+	LDAA	P
+	adda	q
+	BCC	NOCARRY
+NOCARRY	INC	S
+	STAA	S+1
+fin	bra 	fin

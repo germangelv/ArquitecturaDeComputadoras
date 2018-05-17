@@ -1,0 +1,70 @@
+  ADDR B1 B2 B3 B4 C:\Users\German\Box Sync\Facultad\Arquitectura   PAGE       1
+
+                           ORG     $0000
+                   VEC     RMB     2
+                   VECFIN  RMB     2
+                   VEC4    RMB     2
+                   VEC4FIN RMB     2
+                   CANT    RMB     1
+                   CANT_2  RMB     1
+
+                           ORG     $C000   ;Inicio de programa
+  C000 7F 00 08            CLR     CANT    ;Limpio CANT
+  C003 7F 00 09            CLR     CANT_2  ;Limpio CANT_2
+  C006 DE 00               LDX     VEC     ;Cargo VEC
+  C008 18 DE 04            LDY     VEC4    ;Cargo VEC de multiplo de 4
+  C00B A6 00       BUCLE   LDAA    0,X     ;Cargo en A VEC 0 y asi...
+  C00D 46                  RORA            ;Paso Bit bajo a Carry
+  C00E 25 0D               BCS     NOMUL   ;Si es no multiplo salto
+  C010 46                  RORA            ;Paso Bit bajo a Carry
+  C011 25 0A               BCS     NOMUL   ;Si es no multiplo salto
+  C013 49                  ROLA            ;Como es multiplo recupero
+  C014 49                  ROLA            ;el numero
+  C015 18 A7 00            STAA    0,Y     ;Guardo multiplo en VEC4
+  C018 18 08               INY             ;Incremento VEC4
+  C01A 7C 00 08            INC     CANT    ;Incremento CANT de elementos
+  C01D 08          NOMUL   INX             ;Incremento VEC
+  C01E 9C 02               CPX     VECFIN  ;Comparo si es ultimo elemento
+  C020 23 E9               BLS     BUCLE   ;Salto si es el ultimo
+  C022 18 DF 06            STY     VEC4FIN ;Guardo direccion de fin de array
+.                  multiplo de 4
+  C025 7A 00 08            DEC     CANT    ;Decremento CANT para buscar hasta N-
+.                  1 vez N elementos
+  C028 DE 04       RESET   LDX     VEC4    ;Comienzo ordenamiento
+  C02A 18 DE 04            LDY     VEC4    ;Cargo en X dir inicial
+  C02D 18 08               INY             ;Cargo en Y dir siguiente
+  C02F 7C 00 09            INC     CANT_2
+  C032 A6 00       COMPARA LDAA    0,X     ;Cargo dato en A
+  C034 18 E6 00            LDAB    0,Y     ;Cargo dato en B
+  C037 11                  CBA             ;Comparo
+  C038 25 05               BLO     B_ORD   ;En el caso que sea menor lo reordeno
+  C03A 18 A7 00            STAA    0,Y     ;A hacia B
+  C03D E7 00               STAB    0,X     ;B hacia A
+  C03F 08          B_ORD   INX             ;Incremento X
+  C040 18 08               INY             ;Incremento Y
+  C042 9C 06               CPX     VEC4FIN ;Comparo si llego al final
+  C044 26 EC               BNE     COMPARA ;Si X es igual al final del vector NO
+.                  VUELVE
+  C046 96 09               LDAA    CANT_2  :Cargo la cantidad de veces que lo
+.                  hice
+  C048 91 08               CMPA    CANT    ;LLEGO AL MAX?
+  C04A 26 DC               BNE     RESET   ;Salto al principio para comparar N
+.                  veces N-1 datos
+  C04C 20 FE       FIN     BRA     FIN     ;Bucle de Fin
+
+  Symbol Table 
+
+  B_ORD              C03F
+  CANT               0008
+  VEC4               0004
+  NOMUL              C01D
+  BUCLE              C00B
+  VEC                0000
+  RESET              C028
+  VECFIN             0002
+  VEC4FIN            0006
+  COMPARA            C032
+  FIN                C04C
+  Symbol Table     C:\Users\German\Box Sync\Facultad\Arquitectura   PAGE       2
+
+  CANT_2             0009

@@ -1,0 +1,38 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                   ;5.16
+                           ORG $0000
+                   NUM             rmb     1
+                   SIMBOLO         rmb     1
+
+                           ORG $8000
+  8000 96 00       inicio  LDAA    NUM
+  8002 81 80               CMPA    #128
+  8004 24 04               BHS     MAY_SAM
+  8006 C6 3C               LDAB    #'<'
+  8008 20 0A               BRA     GETOUT
+
+  800A 81 80       MAY_SAM CMPA #128
+  800C 22 04               BHI     MAYOR
+  800E C6 3D               LDAB    #'='
+  8010 20 02               BRA     GETOUT
+
+  8012 C6 3E       MAYOR   LDAB    #'>'
+
+  8014 D7 01       GETOUT  STAB    SIMBOLO
+  8016 20 FE       FIN     BRA     FIN
+
+                           ORG     NUM
+  0000 82                  db      130
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  GETOUT             8014
+  MAYOR              8012
+  SIMBOLO            0001
+  FIN                8016
+  MAY_SAM            800A
+  INICIO             8000
+  NUM                0000

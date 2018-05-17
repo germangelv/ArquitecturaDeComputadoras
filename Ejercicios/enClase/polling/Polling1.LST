@@ -1,0 +1,48 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG     $0000
+
+                   NONUM   RMB     1
+                   DIRINI  RMB     2
+                   DIRFIN  RMB     2
+
+                           ORG     $0010
+                   REGSTA  RMB     1
+                   REGDAT  RMB     1
+
+                           ORG     $C000
+  C000 CE 00 20            LDX     #$0020
+  C003 DF 01               STX     DIRINI
+  C005 7F 00 03            CLR     DIRFIN
+  C008 7F 00 04            CLR     DIRFIN+1
+  C00B 7F 00 00            CLR     NONUM
+  C00E 96 10       POLLING LDAA    REGSTA
+  C010 49                  ROLA
+  C011 24 FB               BCC     POLLING
+  C013 96 11               LDAA    REGDAT
+  C015 81 10               CMPA    #$10
+                           BEQ     NONUM
+E                                  ^ The offset must fit in 8 bits.
+  C017 81 20               CMPA    #$20
+                           BEQ     NONUM
+E                                  ^ The offset must fit in 8 bits.
+  C019 A7 00               STAA    0,X
+  C01B 08                  INX
+  C01C 20 F0               BRA     POLLING
+  C01E C6 33       NONUM   LDAB    #$33
+E                  ^ This label already exists.
+  C020 D7 00               STAB    NONUM
+  C022 20 EA               BRA     POLLING
+
+                           ORG     $FFFE
+  FFFE C0 00       INICIO  DW      $C000
+
+  Symbol Table 
+
+  REGDAT             0011
+  DIRFIN             0003
+  POLLING            C00E
+  DIRINI             0001
+  REGSTA             0010
+  NONUM              0000
+  INICIO             FFFE

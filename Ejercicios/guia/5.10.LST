@@ -1,0 +1,39 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG $0000
+                   N1      RMB     1
+                   N2      RMB     1
+                   N3      RMB     1
+                   MAXIMO  RMB     1
+
+                           ORG $8000
+                   inicio
+  8000 96 00               LDAA    N1
+  8002 91 01               CMPA    N2
+  8004 24 02               BHS     NUM
+  8006 96 01               LDAA    N2
+  8008 91 02       NUM     CMPA    N3
+  800A 24 02               BHS     MAYOR
+  800C 96 02               LDAA    N3
+  800E 97 03       MAYOR   STAA    MAXIMO
+  8010 20 FE       FIN     BRA     FIN
+
+
+
+
+                           ORG     N1
+  0000 C7 9B 55            DB %11000111,%10011011,%01010101
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  MAXIMO             0003
+  MAYOR              800E
+  N1                 0000
+  N2                 0001
+  N3                 0002
+  FIN                8010
+  INICIO             8000
+  NUM                8008

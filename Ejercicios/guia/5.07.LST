@@ -1,0 +1,50 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG $0000
+                   n1      rmb     1
+                   n2      rmb     1
+                   n3      rmb     1
+                   s       rmb     2
+                   n       rmb     1
+
+
+                           ORG $8000
+                   inicio
+  8000 D6 05               LDAB    n
+  8002 4F                  CLRA
+  8003 18 8F               XGDY            ;CAMBIO D CON IY.
+  8005 4F                  CLRA
+  8006 5F                  CLRB
+  8007 7F 00 03            CLR     s
+  800A 7F 00 04            CLR     s+1
+  800D CE 00 00            ldx     #n1
+  8010 E6 00       SUMAR   LDAB    0,X             ;CARGO EL PRIMER NUMERO EN B.
+  8012 D3 03               ADDD    s
+  8014 97 03               STAA    s               ;GUARDO D EN S.
+  8016 D7 04               STAB    s+1
+  8018 08                  INX
+  8019 18 09               DEY                     ;DECREMENTO LA CANTIDAD DE
+.                  NUMEROS A SUMAR.PORQUE YA SUME UNO.
+  801B 18 8C 00 00         CPY     #0
+  801F 26 EF               BNE     SUMAR
+  8021 20 FE       FIN     BRA     FIN
+
+
+
+
+                           ORG n1
+  0000 0C 38 0E 00         db 12,56,14,0,0,3
+. 0004 00 03
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  N                  0005
+  S                  0003
+  N1                 0000
+  N2                 0001
+  N3                 0002
+  FIN                8021
+  SUMAR              8010
+  INICIO             8000

@@ -1,0 +1,92 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+
+                                   ORG     PRIM
+                   PRIM            EQU     $0001
+                   ULTI            EQU     $0008
+
+                   VECTOR          RMB     ULTI-PRIM+1
+
+                                   ORG     $0010
+                   MAYUSCULAS      RMB     ULTI-PRIM+1
+
+                                   ORG     $0020
+                   MINUSCULAS      RMB     ULTI-PRIM+1
+
+                                   ORG     $0030
+                   NUMEROS         RMB     ULTI-PRIM+1
+                   PMAY            RMB     2
+                   PMIN            RMB     2
+                   PNUM            RMB     2
+
+                                   ORG     $8000
+  8000 18 CE 00 20 Inicio          LDY     #MINUSCULAS
+  8004 18 DF 3A                    STY     PMIN
+  8007 18 CE 00 10                 LDY     #MAYUSCULAS             ;CARGO LA
+.                  DIRECCION DEL PRINCIPIO EN LOS RESPECTIVOS PUNTEROS
+  800B 18 DF 38                    STY     PMAY
+  800E 18 CE 00 30                 LDY     #NUMEROS
+  8012 18 DF 3C                    STY     PNUM
+
+  8015 CE 00 01                    LDX     #VECTOR
+  8018 A6 00       SIGUE           LDAA    0,X
+  801A AB 05                       adda    $0005,X
+  801C 81 39                       CMPA    #'9'
+  801E 22 15                       BHI     MIN_MAY
+  8020 81 30                       CMPA    #'0'
+  8022 25 09                       BLO     NO_VALID
+  8024 18 DE 3C                    LDY     PNUM
+  8027 18 A7 00                    STAA    0,Y
+  802A 7C 00 3D                    INC     PNUM+1
+                   NO_VALID
+  802D 08          INCREM          INX
+  802E 8C 00 08                    CPX     #ULTI
+  8031 23 E5                       BLS     SIGUE
+  8033 20 FE       FIN             BRA     FIN
+
+  8035 81 5A       MIN_MAY         CMPA    #'Z'
+  8037 22 0F                       BHI     ES_MIN
+  8039 81 41                       CMPA    #'A'
+  803B 25 F0                       BLO     NO_VALID
+  803D 18 DE 38                    LDY     PMAY
+  8040 18 A7 00                    STAA    0,Y
+  8043 7C 00 39                    INC     PMAY+1
+  8046 20 E5                       BRA     INCREM
+
+  8048 81 61       ES_MIN          CMPA    #'a'
+  804A 25 E1                       BLO     NO_VALID
+  804C 81 7A                       CMPA    #'z'
+  804E 22 DD                       BHI     NO_VALID
+  8050 18 DE 3A                    LDY     PMIN
+  8053 18 A7 00                    STAA    0,Y
+  8056 7C 00 3B                    INC     PMIN+1
+  8059 20 D2                       BRA     INCREM
+
+
+                           ORG     PRIM
+  0001 61 28 58 23         db      $61,'(','X','#','1','Q',$54,'+'
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       2
+
+. 0005 31 51 54 2B
+
+                           ORG $FFFE
+  FFFE 80 00               dw Inicio
+
+  Symbol Table 
+
+  ES_MIN             8048
+  MIN_MAY            8035
+  PMIN               003A
+  PNUM               003C
+  ULTI               0008
+  MAYUSCULAS         0010
+  MINUSCULAS         0020
+  INCREM             802D
+  VECTOR             0001
+  NUMEROS            0030
+  NO_VALID           802D
+  FIN                8033
+  SIGUE              8018
+  PMAY               0038
+  PRIM               0001
+  INICIO             8000

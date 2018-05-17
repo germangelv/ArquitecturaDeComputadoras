@@ -1,0 +1,53 @@
+  ADDR B1 B2 B3 B4 C:\Users\German\Box Sync\Facultad\Arquitectura   PAGE       1
+
+                           ORG $0000
+                   LONGITUD        EQU     2       ;EN BYTES
+                   NUM1            RMB     LONGITUD
+                   NUM2            RMB     LONGITUD
+                   RES             RMB     LONGITUD+1
+                   AUX             RMB     2
+
+                           ORG $8000
+  8000 0C          inicio  CLC     ;LIMPIO CARRY
+  8001 7F 00 04            CLR     RES
+
+  8004 C6 02               LDAB    #LONGITUD
+                   ;       STAB    CONT
+  8006 CE 00 00    SIGUE   LDX     #NUM1
+  8009 18 CE 00 02         LDY     #NUM2
+
+  800D 5A                  DECb
+  800E 3A                  ABX
+  800F A6 00               LDAA    0,X
+  8011 18 3A               ABY
+  8013 18 A9 00            ADCA    0,Y
+  8016 DF 07               STX     AUX
+  8018 CE 00 04            LDX     #RES
+  801B 3A                  ABX
+  801C A7 01               STAA    1,X
+  801E DE 07               LDX     AUX
+  8020 D7 07               STAB    AUX
+  8022 4F                  CLRA
+  8023 91 07               CMPA    AUX
+  8025 26 DF               BNE     SIGUE
+  8027 24 03               BCC     FIN
+  8029 7C 00 04            INC     RES
+  802C 20 FE       FIN     BRA     FIN
+
+                           ORG     NUM1
+  0000 00 95 01 22         DW      %10010101,%100100010,%01110010,%00101010
+. 0004 00 72 00 2A
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  NUM1               0000
+  NUM2               0002
+  LONGITUD           0002
+  RES                0004
+  FIN                802C
+  AUX                0007
+  SIGUE              8006
+  INICIO             8000

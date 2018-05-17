@@ -1,0 +1,45 @@
+  ADDR B1 B2 B3 B4 C:\Users\NICOLAS\Dropbox\uni cursada\            PAGE       1
+
+                   ;5.20
+                           ORG $0000
+                   DATO            rmb     1
+                   RESULTADO       rmb     2
+
+                           ORG $8000
+  8000 CE 00 01    inicio  LDX     #tabla
+  8003 D6 00               LDAB    DATO
+  8005 54                  LSRB
+  8006 54                  LSRB
+  8007 54                  LSRB
+  8008 54                  LSRB
+  8009 3A                  ABX
+  800A A6 00               LDAA    0,X
+                   ;       STAA    RESULTADO
+  800C CE 00 01            LDX     #tabla
+  800F D6 00               LDAB    DATO
+  8011 C4 0F               ANDB    #$0F
+  8013 3A                  ABX
+  8014 E6 00               LDAB    0,X
+  8016 DD 01               STD     RESULTADO
+  8018 20 FE       FIN     BRA     FIN
+
+
+                           ORG dato
+  0000 78                  db $78
+
+
+                   tabla
+  0001 3F 06 5B 4F         db $3f,$06,$5b,$4f,$66,$6d,$7d,$07,$7f,$6f
+. 0005 66 6D 7D 07
+. 0009 7F 6F
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  RESULTADO          0001
+  FIN                8018
+  TABLA              0001
+  INICIO             8000
+  DATO               0000

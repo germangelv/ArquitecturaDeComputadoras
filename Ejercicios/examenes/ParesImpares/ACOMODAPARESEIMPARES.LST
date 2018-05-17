@@ -1,0 +1,38 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG     $0000
+                   dirIni  RMB     2       ;Declaro Dir Inicial Vector
+                   dirFin  RMB     2       ;Declaro Dir Final Vector
+                   dirPar  RMB     2       ;Declaro Pares
+                   dirImpa RMB     2       ;Declaro Impares
+                           ORG     $C000
+  C000 DE 00               LDX     dirIni  ;Cargo dir en X
+  C002 A6 00       bucle   LDAA    0,X     ;Cargo dir de X en A
+  C004 46                  RORA            ;Corro el bit de impar al Carry
+  C005 24 0E               BCC     espar   ;Es carry papu
+  C007 49                  ROLA            ;Acomodo la guazada
+  C008 18 DE 06            LDY     dirImpa ;Cargo dir Impares Y
+  C00B 18 A7 00            STAA    0,Y     ;Guardo en dir Impares A
+  C00E 18 08               INY             ;Incremento Dir Impares
+  C010 18 DF 06            STY     dirImpa ;Guardo Dir Impares incrementada
+  C013 20 0C               BRA     comun   ;Salto a lo comun de los numeros
+  C015 49          espar   ROLA            ;Acomodo la guazada
+  C016 18 DE 04            LDY     dirPar  ;Cargo dir Pares Y
+  C019 18 A7 00            STAA    0,Y     ;Guardo en dir Pares A
+  C01C 18 08               INY             ;Incremento Dir Pares
+  C01E 18 DF 04            STY     dirPar  ;Guardo Dir Pares incrementado
+  C021 08          comun   INX             ;Incremento X
+  C022 9C 02               CPX     dirFin  ;Comparo dir incrementada con X
+  C024 23 DC               BLS     bucle   ;Pregunto por carry
+  C026 20 FE       fin     BRA     fin     ;chau papi
+
+  Symbol Table 
+
+  ESPAR              C015
+  DIRFIN             0002
+  COMUN              C021
+  DIRINI             0000
+  BUCLE              C002
+  FIN                C026
+  DIRIMPA            0006
+  DIRPAR             0004

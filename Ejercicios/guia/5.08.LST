@@ -1,0 +1,47 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG $0000
+                   P       RMB     2
+                   Q       RMB     2
+                   S       RMB     3
+
+
+                           ORG $8000
+  8000 0C          inicio  CLC             ;PONGO EN CERO EL BIT DE CARRY
+  8001 7F 00 04            CLR S
+  8004 7F 00 05            CLR S+1
+                           bG      100
+E                          ^ Unknown instruction or directive.
+  8007 7F 00 06            CLR S+2
+  800A 4F                  CLRA
+  800B 5F                  CLRB
+  800C CE 00 00            LDX     #P
+  800F 18 CE 00 02         LDY     #Q
+  8013 E6 01               LDAB    1,X
+  8015 18 E9 01            ADCB    1,Y             ;SUMO CON CARRY PARTE BAJA
+  8018 A6 00               LDAA    0,X
+  801A 18 A9 00            ADCA    0,Y             ;SUMO CON CARRY PARTE ALTA
+  801D D7 06               STAB    S+2             ;GUARDO LA PARTE BAJA
+  801F 97 05               STAA    S+1             ;GUARDO LA PARTE MEDIANA
+  8021 24 03               BCC     FIN
+  8023 7C 00 04            INC     S               ;SI HAY CARRY INCREMENTO EL
+.                  TERCER BYTE DE RESULTADO.
+  8026 20 FE       FIN     BRA     FIN
+
+
+
+
+                           ORG P
+  0000 DA C0 36 C8         dw 56000,14024
+
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  P                  0000
+  Q                  0002
+  S                  0004
+  FIN                8026
+  INICIO             8000

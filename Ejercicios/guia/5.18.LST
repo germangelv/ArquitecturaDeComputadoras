@@ -1,0 +1,78 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+
+                           ORG 0010
+                   prim            equ     0000
+                   ulti            equ     0008
+
+                   DATO            rmb     1
+                   posicion        rmb     2
+                   REP             rmb     1       ;SI REP=0 LO ENCONTRO UNA
+.                  SOLA VEZ. SI REP=FF NO LO ENCONTRO.
+
+                           org     prim
+                   vector          rmb     ulti
+
+
+
+                           ORG $8000
+  8000 7F 00 0D    inicio  CLR     REP
+  8003 96 0A               LDAA    DATO
+  8005 CE 00 00            LDX     #prim
+  8008 A1 00       SIGUE   CMPA    0,X             ;comparo a con el vector[0]..
+.                  y despues con los consecutivos.
+  800A 27 11               BEQ     es_prim         ;si es igual salto para
+.                  contar y guardar la direccion si es el primero.
+  800C 08          vuelve  INX
+  800D 8C 00 08            CPX     #ulti           ;para saber si llege al final
+.                  del vector.
+  8010 25 F6               BLO     SIGUE
+
+  8012 D6 0D               ldab    rep
+  8014 C1 00               CMPB    #0
+  8016 27 12               BEQ     NO_ENCON        ;SI NO ENCUENTRA NADA, PONGO
+.                  LA POSI Y REPETICION EN FF.
+  8018 7A 00 0D            DEC     REP
+  801B 20 FE       FIN     BRA     FIN
+
+  801D D6 0D       es_prim ldab    rep             ;si es el primero guarda la
+.                  direccion de memoria.. sino solo incrementa el contador
+  801F C1 00               CMPB    #0              ;COMPARA B CON EL VALOR CERO.
+  8021 26 02               BNE     CONTAR
+  8023 DF 0B               STX     posicion
+  8025 7C 00 0D    CONTAR  INC     REP
+  8028 20 E2               BRA     vuelve
+
+  802A CE FF FF    NO_ENCON LDX    #$FFFF
+  802D DF 0B                STX    posicion
+  802F 86 FF                LDAA   #$FF
+  8031 97 0D                STAA   rep
+  8033 20 E6                BRA    FIN
+
+                           ORG     prim
+  0000 10 50 F1 78         db      $10,$50,$F1,$78,%11110101,$f1,$F1,$98
+. 0004 F5 F1 F1 98
+
+                           ORG     DATO
+  000A F1                  db      $f1
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  NO_ENCON           802A
+  CONTAR             8025
+  ULTI               0008
+  REP                000D
+  Symbol Table     thrass11.tmp                                     PAGE       2
+
+  VECTOR             0000
+  ES_PRIM            801D
+  VUELVE             800C
+  FIN                801B
+  SIGUE              8008
+  PRIM               0000
+  POSICION           000B
+  INICIO             8000
+  DATO               000A

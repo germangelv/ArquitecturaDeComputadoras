@@ -1,0 +1,20 @@
+  ADDR B1 B2 B3 B4 C:\Users\German\Box Sync\Facultad\Arquitectura   PAGE       1
+
+                           ORG     $0000
+  0000 BD 10 00            JSR     $1000
+  0003 20 FE       FIN     BRA     FIN
+                           ORG     $1000
+  1000 4F                  CLRA
+  1001 D6 00               LDAB    $0
+  1003 E7 00       ATRAS   STAB    0,X
+  1005 08                  INX
+  1006 5A                  DECB
+  1007 4A                  DECA
+  1008 91 00               CMPA    $0
+  100A 26 F7               BNE     ATRAS
+  100C 39                  RTS
+
+  Symbol Table 
+
+  ATRAS              1003
+  FIN                0003

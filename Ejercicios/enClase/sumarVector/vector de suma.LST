@@ -1,0 +1,36 @@
+  ADDR B1 B2 B3 B4 C:\Users\German\Desktop\vector de suma.asm       PAGE       1
+
+                           ORG     $0000   //Dir de inicio de variables
+                   dirIni  RMB     2       //Dir de inicio de vector
+                   dirFin  RMB     2       //Dir de fin de vector
+                   suma    RMB     2       //Dir de suma final
+                           ORG     $C000   //Dir de inicio de programa
+  C000 4F                  CLRA            //Limpio A
+  C001 7F 00 04            CLR     suma    //Limpio suma
+  C004 DE 00               LDX     dirIni  //Cargo en registro X direccion de
+.                  inicio de vector
+  C006 AB 00       bucle   ADDA    0,X     //Cargo la posicion inicial o actual
+.                  de vector en A
+  C008 24 03               BCC     sincary //Si no hubo carry salto, sino
+.                  incremento
+  C00A 7C 00 04            INC     suma    //Incremento en un byte la parte alta
+.                  de suma (ya que suma tiene la direccion alta por como
+.                  ensambla)
+  C00D 08          sincary INX             //Incremento el registro X que tiene
+.                  la direccion de memoria actual de la posicion sumada del
+.                  vector
+  C00E 9C 02               CPX     dirFin  //Comparo X con la direccion de fin
+  C010 23 F4               BLS     bucle   //Salto si lo anterior de X es mas
+.                  chico que lo que se encuentra en X
+  C012 97 05               STAA    suma+1  //Guardo en la parte baja lo
+.                  acumulado en A
+  C014 20 FE       fin     BRA     fin     //Salto de fin
+
+  Symbol Table 
+
+  DIRFIN             0002
+  SUMA               0004
+  DIRINI             0000
+  BUCLE              C006
+  SINCARY            C00D
+  FIN                C014

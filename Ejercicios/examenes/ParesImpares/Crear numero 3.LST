@@ -1,0 +1,18 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG $0000       ;INICIO
+                   X       RMB     1       ;CREO MASCARA N3 con 8 bits
+  0001 7F 00 00            CLR     X       ;Limpio N3
+  0004 96 00               LDAA    X       ;Cargo datos en A de la primer pos X
+  0006 4C                  INCA            ;Incremento un bit 0X1
+  0007 49                  ROLA            ;Corro los bits para que aparesca el
+.                  dos 0X10
+  0008 4C                  INCA            ;Incremento un bit para que aparesca
+.                  el tres 0X11
+  0009 20 FE       FIN     BRA     FIN     ;Dejo el loop para ver el estado de
+.                  memoria
+
+  Symbol Table 
+
+  X                  0000
+  FIN                0009

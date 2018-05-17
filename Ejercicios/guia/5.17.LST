@@ -1,0 +1,56 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                   ;5.17
+                           ORG $0000
+                   prim    equ     $0000
+                   ulti    equ     $0007
+                   vector          rmb     8
+                   posicion        rmb     1
+                   AUX             RMB     2
+
+
+
+                           ORG $8000
+  8000 CE 00 00    inicio  ldx     #prim
+  8003 18 CE 00 01         ldy     #prim+1
+  8007 A6 00       sigue   ldaa    0,X
+                   sigue2
+  8009 18 A1 00            cmpa    0,y
+  800C 25 10               BLO     CAMBIO
+  800E 18 08               INY
+  8010 18 8C 00 07         cpy     #ulti
+  8014 23 F3               bls     sigue2
+
+  8016 8F                  xgdx
+  8017 83 00 00            SUBD    #prim
+  801A D7 08               stab    posicion
+  801C 20 FE       fin     bra     fin
+
+  801E 18 DF 09    CAMBIO  STY     AUX
+  8021 DE 09               LDX     AUX
+  8023 18 08               iny
+  8025 20 E0               bra     sigue
+
+
+
+
+
+                           ORG     prim
+  0000 10 32 2D 4E         db      $10,50,45,78,%11110101,$f1,1,98
+. 0004 F5 F1 01 62
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  ULTI               0007
+  VECTOR             0000
+  CAMBIO             801E
+  FIN                801C
+  SIGUE2             8009
+  AUX                0009
+  SIGUE              8007
+  PRIM               0000
+  POSICION           0008
+  INICIO             8000

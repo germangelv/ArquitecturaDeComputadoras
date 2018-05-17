@@ -1,0 +1,26 @@
+  ADDR B1 B2 B3 B4 C:\Users\German\Desktop\buscamayorvector.asm     PAGE       1
+
+                           ORG     $0000
+                   dirini  RMB     2
+                   cant    RMB     1
+                   max     RMB     1
+                           ORG     $C000
+  C000 7F 00 03            CLR     max
+  C003 DE 00               LDX     dirini
+  C005 A6 00       inicio  LDAA    0,X
+  C007 91 03               CMPA    max
+  C009 25 02               BLO     nomayor
+  C00B 97 03               STAA    max
+  C00D 08          nomayor INX
+  C00E 7A 00 02            DEC     cant
+  C011 26 F2               BNE     inicio
+  C013 20 FE       fin     BRA     fin
+
+  Symbol Table 
+
+  DIRINI             0000
+  CANT               0002
+  MAX                0003
+  FIN                C013
+  NOMAYOR            C00D
+  INICIO             C005

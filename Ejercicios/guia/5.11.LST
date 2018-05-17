@@ -1,0 +1,39 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG $0000
+                   NUMERO          rmb     1
+                   RESULTADO       rmb     1
+
+                           ORG $8000
+  8000 4F          inicio  CLRA
+  8001 96 00               LDAA    NUMERO
+  8003 49                  ROLA
+  8004 24 04               BCC     POSIT
+                   NEG
+                   ;       SEC                     ;Set carry.
+                   ;       CLRA                    ;
+                   ;       SBCA    NUMERO
+  8006 46                  RORA
+  8007 40                  NEGA
+  8008 20 01               BRA     GUARDO
+
+  800A 46          POSIT   RORA
+  800B 97 01       GUARDO  STAA    RESULTADO
+  800D 20 FE       FIN     BRA     FIN
+
+
+                           ORG NUMERO
+  0000 8E                  DB      %10001110
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  NEG                8006
+  NUMERO             0000
+  GUARDO             800B
+  RESULTADO          0001
+  POSIT              800A
+  FIN                800D
+  INICIO             8000

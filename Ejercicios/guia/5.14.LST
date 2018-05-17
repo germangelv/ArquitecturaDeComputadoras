@@ -1,0 +1,47 @@
+  ADDR B1 B2 B3 B4 C:\Users\July\Documents\Dropbox\uni cursada\     PAGE       1
+
+                   ;5.14
+                           ORG $0000
+                   num     rmb     1
+                   ascii_h rmb     1
+                   ascii_l rmb     1
+
+
+                           ORG $8000
+  8000 96 00       inicio  ldaa    num
+  8002 84 0F               anda    #$0F
+  8004 8B 30               adda    #'0'
+  8006 81 39               cmpa    #'9'
+  8008 23 02               BLS     SIGUE
+  800A 8B 07               ADDA    #$7
+  800C 97 02       SIGUE   STAA    ascii_l
+
+  800E 96 00               ldaa    num
+  8010 44                  lsra
+  8011 44                  lsra
+  8012 44                  lsra
+  8013 44                  lsra
+  8014 8B 30               adda    #'0'
+  8016 81 39               CMPA    #'9'
+  8018 23 02               BLS     SIGUE2
+  801A 8B 07               adda    #$7
+
+  801C 97 01       SIGUE2  STAA    ascii_h
+
+  801E 20 FE       fin     bra fin
+
+                           ORG     num
+  0000 AE                  db      %10101110
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  ASCII_H            0001
+  ASCII_L            0002
+  FIN                801E
+  SIGUE2             801C
+  SIGUE              800C
+  INICIO             8000
+  NUM                0000

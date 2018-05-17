@@ -1,0 +1,36 @@
+  ADDR B1 B2 B3 B4 C:\Users\German\Box Sync\Facultad\Arquitectura   PAGE       1
+
+                           ORG     $0000
+                   IMP     RMB     1
+                   CERO    RMB     1
+                   DIRINI  RMB     2
+                   DIRFIN  RMB     2
+
+                           ORG     $C000
+  C000 7F 00 00            CLR     IMP
+  C003 7F 00 01            CLR     CERO
+  C006 DE 02               LDX     DIRINI
+  C008 A6 00       BUCLE   LDAA    0,X
+  C00A 2E 05               BGT     NOES0
+  C00C 2D 03               BLT     NOES0
+  C00E 7C 00 01            INC     CERO
+  C011 46          NOES0   RORA
+  C012 24 03               BCC     NOIMPAR
+  C014 7C 00 00            INC     IMP
+  C017 08          NOIMPAR INX
+  C018 9C 04               CPX     DIRFIN
+  C01A 26 EC               BNE     BUCLE
+  C01C 20 FE       FIN     BRA     FIN
+
+
+
+  Symbol Table 
+
+  DIRFIN             0004
+  DIRINI             0002
+  BUCLE              C008
+  FIN                C01C
+  NOES0              C011
+  CERO               0001
+  IMP                0000
+  NOIMPAR            C017

@@ -1,0 +1,44 @@
+  ADDR B1 B2 B3 B4 C:\Users\German\Desktop\Triangulo.asm            PAGE       1
+
+                           ORG     $0000
+                   L1      RMB     1
+                   L2      RMB     1
+                   L3      RMB     1
+                   TipoT   RMB     1
+                           ORG     $C000
+  C000 96 00               LDAA    L1
+  C002 D6 01               LDAB    L2
+  C004 11                  CBA
+  C005 26 10               BNE     probeL3
+  C007 91 02               CMPA    L3
+  C009 26 06               BNE     esISO
+  C00B 86 51               LDAA    #'Q
+  C00D 97 03               STAA    TipoT
+  C00F 20 1A               BRA     FIN
+  C011 86 49       esISO   LDAA    #'I
+  C013 97 03               STAA    TipoT
+  C015 20 14               BRA     FIN
+  C017 91 02       probeL3 CMPA    L3
+  C019 26 06               BNE     seraISO
+  C01B 86 49       esCA    LDAA    #'I
+  C01D 97 03               STAA    TipoT
+  C01F 20 0A               BRA     FIN
+  C021 D1 02       seraISO CMPB    L3
+  C023 26 02               BNE     esESCA
+  C025 20 F4               BRA     esCA
+  C027 86 45       esESCA  LDAA    #'E
+  C029 97 03               STAA    TipoT
+  C02B 20 FE       FIN     BRA     FIN
+
+  Symbol Table 
+
+  ESCA               C01B
+  SERAISO            C021
+  PROBEL3            C017
+  TIPOT              0003
+  L1                 0000
+  L2                 0001
+  L3                 0002
+  ESESCA             C027
+  FIN                C02B
+  ESISO              C011

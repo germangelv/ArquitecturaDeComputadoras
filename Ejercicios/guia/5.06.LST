@@ -1,0 +1,63 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG $0000
+                   s       rmb     2
+                   n1      rmb     1
+                   n2      rmb     1
+                   n3      rmb     1
+                   n4      rmb     1
+                   n5      rmb     1
+                   n6      rmb     1
+                   n7      rmb     1
+                   nn      rmb     1
+
+
+                   ;tengo los datos de n1, nn y s.
+
+                           ORG $8000
+                   inicio
+
+  8000 7F 00 00            CLR     s
+  8003 7F 00 01            CLR     s+1
+  8006 4F                  CLRA
+  8007 5F                  CLRB
+
+  8008 CE 00 02            LDX     #n1     ;CARGA EN X, LA DIRECCION DE N1-
+  800B E6 00       SUMA    LDAB    0,X     ; CARGA EN B EL PRIMER VALOR.
+  800D 4F                  CLRA
+  800E D3 00               addd    s       ;SUMA D CON S(16 BIT)
+  8010 97 00               STAA    s       ;GUARDA PARTE ALTA
+  8012 D7 01               STAB    s+1     ;GUARDA PARTE BAJA
+  8014 8C 00 09            CPX     #nn     ;COMPARA SI LA DIRECCION DE X, ES
+.                  IGUAL A LA DIRECCION DE NN.
+  8017 27 03               BEQ     FIN
+  8019 08                  INX
+  801A 20 EF               BRA     SUMA
+  801C 20 FE       FIN     BRA     FIN
+
+
+
+
+
+                           ORG s
+  0000 00 00 14 0F         db $00,$00,20,15,4,126,56,12,80,10
+. 0004 04 7E 38 0C
+. 0008 50 0A
+
+                           ORG $fffe
+  FFFE 80 00               dw inicio
+
+  Symbol Table 
+
+  SUMA               800B
+  S                  0000
+  N1                 0002
+  N2                 0003
+  N3                 0004
+  N4                 0005
+  N5                 0006
+  N6                 0007
+  N7                 0008
+  NN                 0009
+  FIN                801C
+  INICIO             8000

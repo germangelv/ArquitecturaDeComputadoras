@@ -1,0 +1,25 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG     $0000
+                   S       RMB     2
+                   P       RMB     1
+                   Q       RMB     1
+                   R       RMB     1
+
+                           org     $c000
+  C000 7F 00 00            CLR     S
+  C003 96 02               LDAA    P
+  C005 9B 03               adda    q
+  C007 24 00               BCC     NOCARRY
+  C009 7C 00 00    NOCARRY INC     S
+  C00C 97 01               STAA    S+1
+  C00E 20 FE       fin     bra     fin
+
+  Symbol Table 
+
+  P                  0002
+  Q                  0003
+  R                  0004
+  S                  0000
+  NOCARRY            C009
+  FIN                C00E
